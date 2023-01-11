@@ -8,8 +8,8 @@ const color2 = '#FF8400'
 const textColor = '#194d30'
 const ticks = 10
 
-const hpadding = 45
-const wpadding = 80
+const vpadding = 45
+const hpadding = 80
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -52,23 +52,23 @@ const data = d3.csvParse(dataset, d => {
 
 const xScale=d3.scaleLinear()
 	.domain([0,data.length])
-	.range([wpadding,width-wpadding])
+	.range([hpadding,width-hpadding])
 
 
 const yScale=d3.scaleLinear()
 	.domain([0,d3.max(data, d => d.evasion)])
-	.range([height-hpadding,hpadding])
+	.range([height-vpadding,vpadding])
 
 
 
 const yAxis=d3.axisLeft(yScale)
 	.ticks(ticks)
-	.tickSize(-(width-(wpadding*2)))
+	.tickSize(-(width-(hpadding*2)))
 
 
 const yTicks = svg
 	.append('g')
-	.attr('transform', `translate(${wpadding}, 0)`)
+	.attr('transform', `translate(${hpadding}, 0)`)
 	.call(yAxis)
 
 
@@ -77,8 +77,8 @@ const yTicks = svg
 data.forEach(function(d, i) { 
 	svg
 	.append("line")
-	.attr("x1", ""+wpadding+"")
-	.attr("x2", ""+(width-wpadding)+"")
+	.attr("x1", ""+hpadding+"")
+	.attr("x2", ""+(width-hpadding)+"")
 	.attr("y1", ""+yScale(d.evasion)+"") 
 	.attr("y2", ""+yScale(d.evasion)+"")
 	.attr("stroke", "#D3D3D3")
@@ -86,10 +86,11 @@ data.forEach(function(d, i) {
 
 	svg
 	.append("g")
-	.attr('transform',`translate(${wpadding-68}, ${yScale(d.evasion)})`)
+	.attr('transform',`translate(${hpadding-67}, ${yScale(d.evasion)})`)
 	.append("text")
-	.attr("font-size", "9.5px")
-	.attr("color",textColor )
+	.attr("font-size", "10px")
+	.style("font-family", "sans-serif")
+	.style("color", "rgb(25, 77, 48)")
 	.text(numberWithCommas(d.evasion))
 	
 
@@ -115,7 +116,7 @@ svg
 	.style('stroke-width', 0)
 	
 const aziende = svg
-	.selectAll('g.stringa')
+	.selectAll('g.azienda')
 	.data(data)
 	.enter()
 	.append('g')
@@ -127,14 +128,14 @@ const cerchi = aziende
  	.append('circle')
 	 	.attr('fill',color1)
  		.attr('r',Radius)
-		.attr('cx', wpadding)
+		.attr('cx', hpadding)
 		.attr('cy', 0)
 
 
 const archi = aziende
  	.append('path')
 	 	.attr('fill', color2)
-		.attr('d', d => describeArc((wpadding), 0, Radius, 0, (d.percControlled * 360)))
+		.attr('d', d => describeArc((hpadding), 0, Radius, 0, (d.percControlled * 360)))
 		
 
 const testo = svg
@@ -143,7 +144,7 @@ const testo = svg
 		.enter()
 		.append('g')
 			.attr('class', 'testo')
-			.attr('transform',(d,i) => `translate(${wpadding+ xScale(i)}, ${yScale(height) +20})`)
+			.attr('transform',(d,i) => `translate(${hpadding+ xScale(i)}, ${yScale(height) +20})`)
 			
 testo.append("text").text(function(d){ return d.companyType}).style("text-anchor", "middle")
 
@@ -154,37 +155,37 @@ const testo_perc = svg
 		.enter()
 		.append('g')
 			.attr('class', 'perc')
-			.attr('transform',(d,i) => `translate(${wpadding+ xScale(i)}, ${d3.max(data, d => d.evasion) == d.evasion ? yScale(d.evasion) +  Radius +15 : yScale(d.evasion) -  Radius -7 })`);
+			.attr('transform',(d,i) => `translate(${hpadding+ xScale(i)}, ${d3.max(data, d => d.evasion) == d.evasion ? yScale(d.evasion) +  Radius +15 : yScale(d.evasion) -  Radius -7 })`);
 			
 testo_perc.append("text").text(function(d) {return bigDecimal.round(""+d.percControlled * 100 +"" , 2) + '%'}).style("text-anchor", "middle")
 
 svg.append("g")
-	.attr("transform", "translate(" + `${(width- 75 - wpadding*2)}` + "," + 30 + ")")
+	.attr("transform", "translate(" + `${(width- 75 - hpadding*2)}` + "," + 30 + ")")
 	.append("text")
 	.attr("font-size", "15px").text("Legenda:")
 
 svg.append("g")
 	.append("rect")
-	.attr("transform", "translate(" + (width - wpadding*2-12) + "," + ((wpadding/2) + 11) + ")")
+	.attr("transform", "translate(" + (width - hpadding*2-12) + "," + ((hpadding/2) + 11) + ")")
 	.attr("width", "10")
 	.attr("height", "10")
 	.attr("fill", '#FF8400')
 
 svg.append("g")
 	.append("rect")
-	.attr("transform", "translate(" + (width - wpadding*2-12) + "," + ((wpadding/2) - 4) + ")")
+	.attr("transform", "translate(" + (width - hpadding*2-12) + "," + ((hpadding/2) - 4) + ")")
 
 	.attr("width", "10")
 	.attr("height", "10")
 	.attr("fill", '#87CEFA')
 
 svg.append("g")
-	.attr("transform", "translate(" + (width - wpadding*2) + "," + ((wpadding/2) +5 ) + ")")
+	.attr("transform", "translate(" + (width - hpadding*2) + "," + ((hpadding/2) +5 ) + ")")
 	.append("text")
 	.attr("font-size", "12px").text("Controllate")
 
 svg.append("g")
-	.attr("transform", "translate(" + (width - wpadding*2)  + "," + ((wpadding/2)+20 ) + ")")
+	.attr("transform", "translate(" + (width - hpadding*2)  + "," + ((hpadding/2)+20 ) + ")")
 	.append("text")
 	.attr("font-size", "12px").text("Non controllate")
 
