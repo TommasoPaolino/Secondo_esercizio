@@ -182,12 +182,12 @@ svg.append("g")
 svg.append("g")
 	.attr("transform", "translate(" + (width - hpadding*2) + "," + ((hpadding/2) +5 ) + ")")
 	.append("text")
-	.attr("font-size", "12px").text("Non Controllate")
+	.attr("font-size", "12px").text("Non Controllato")
 
 svg.append("g")
 	.attr("transform", "translate(" + (width - hpadding*2)  + "," + ((hpadding/2)+20 ) + ")")
 	.append("text")
-	.attr("font-size", "12px").text("Controllate")
+	.attr("font-size", "12px").text("Controllato")
 
 
 console.log(data)
